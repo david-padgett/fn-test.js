@@ -1,10 +1,10 @@
 {
-	"name": "fn-test.js",
+	"name": "fn-test",
 	"version": "1.0.0",
 	"description": "fn-test.js - A simple pass/fail functional test library for JavaScript.",
-	"main": "fn-test.js",
+	"main": "dist/fn-test-node.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "make -f fn-test.mak test"
 	},
 	"repository": {
 		"type": "git",
