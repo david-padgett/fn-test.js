@@ -6,7 +6,6 @@ SED_ARGS=$(if grep -c 'Darwin',-i "",-i)
 dist/fn-test.js : src/main/javascript/fn-test.js
 	@echo Building $@
 	@mkdir -p dist
-	@rm -f $@
 	@cat $+ > $@
 	@sed $(SED_ARGS) $(SED_SLC_REGEX) $@
 	@sed $(SED_ARGS) $(SED_MLC_REGEX) $@
@@ -14,7 +13,6 @@ dist/fn-test.js : src/main/javascript/fn-test.js
 dist/fn-test-node.js : src/main/javascript/fn-test-node-prefix.js src/main/javascript/fn-test.js src/main/javascript/fn-test-node-suffix.js
 	@echo Building $@
 	@mkdir -p dist
-	@rm -f $@
 	@cat $+ > $@
 	@sed $(SED_ARGS) $(SED_SLC_REGEX) $@
 	@sed $(SED_ARGS) $(SED_MLC_REGEX) $@
@@ -22,7 +20,6 @@ dist/fn-test-node.js : src/main/javascript/fn-test-node-prefix.js src/main/javas
 dist/fn-test-node-tests.js : src/test/javascript/node-prefix.js src/test/javascript/test.js src/test/javascript/node-suffix.js
 	@echo Building $@
 	@mkdir -p dist
-	@rm -f $@
 	@cat $+ > $@
 	@sed $(SED_ARGS) $(SED_SLC_REGEX) $@
 	@sed $(SED_ARGS) $(SED_MLC_REGEX) $@

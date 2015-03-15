@@ -10,14 +10,14 @@ div {border: none; height: auto; margin: 0%; padding: 0%; width: 100%;}
 div#header {background: inherit; color: inherit; height: auto; margin: 1.5% 1.5% 1.5% 1.5%; padding: 0%; width: 97%;}
 div#header h1 {background: inherit; border-bottom: black solid 1px; color: inherit; font-family: Courier New, sans-serif; font-size: large; font-weight: bold; width: 100%;}
 
-div#fn-test_results {background: inherit; color: inherit; margin: 0% 1.5% 1.5% 1.5%; padding: 0%; width: 97%;}
-div#fn-test_results h1 {background: inherit; color: inherit; font-family: Courier New, sans-serif; font-size: small; font-weight: bold; margin: 0% 0% 1em 0%; width: 100%;}
-div#fn-test_results pre {font-size: medium; margin: 0%; padding: 0%;}
+div#fn-test-results {background: inherit; color: inherit; margin: 0% 1.5% 1.5% 1.5%; padding: 0%; width: 97%;}
+div#fn-test-results h1 {background: inherit; color: inherit; font-family: Courier New, sans-serif; font-size: small; font-weight: bold; margin: 0% 0% 1em 0%; width: 100%;}
+div#fn-test-results pre {font-size: medium; margin: 0%; padding: 0%;}
 
-div#fn-test_errors {background: inherit; color: inherit; margin: 0% 1.5% 1.5% 1.5%; padding: 0%; width: 97%;}
-div#fn-test_errors h1 {background: inherit; color: inherit; font-family: Courier New, sans-serif; font-size: small; font-weight: bold; margin: 0% 0% 1em 0%; width: 100%;}
-div#fn-test_errors pre {font-size: medium;}
+div#fn-test-errors {background: inherit; color: inherit; margin: 0% 1.5% 1.5% 1.5%; padding: 0%; width: 97%;}
+div#fn-test-errors h1 {background: inherit; color: inherit; font-family: Courier New, sans-serif; font-size: small; font-weight: bold; margin: 0% 0% 1em 0%; width: 100%;}
+div#fn-test-errors pre {font-size: medium;}
 
-div#fn-test_summary {background: inherit; color: inherit; margin: 0% 1.5% 1.5% 1.5%; padding: 0%; width: 97%;}
-div#fn-test_summary h1 {background: inherit; color: inherit; font-family: Courier New, sans-serif; font-size: small; font-weight: bold; margin: 0% 0% 1em 0%; width: 100%;}
-div#fn-test_summary pre {font-size: medium;}
+div#fn-test-summary {background: inherit; color: inherit; margin: 0% 1.5% 1.5% 1.5%; padding: 0%; width: 97%;}
+div#fn-test-summary h1 {background: inherit; color: inherit; font-family: Courier New, sans-serif; font-size: small; font-weight: bold; margin: 0% 0% 1em 0%; width: 100%;}
+div#fn-test-summary pre {font-size: medium;}
