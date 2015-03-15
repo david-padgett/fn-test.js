@@ -1,14 +1,21 @@
 {
-  "name": "fn-test.js",
-  "version": "1.0.0",
-  "description": "fn-test.js - A simple pass/fail functional test library for JavaScript.",
-  "main": "fn-test.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "test libary", "test framework", "unit test"
-  ],
-  "author": "David Padgett",
-  "license": "MIT"
+	"name": "fn-test.js",
+	"version": "1.0.0",
+	"description": "fn-test.js - A simple pass/fail functional test library for JavaScript.",
+	"main": "fn-test.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/david-padgett/fn-test.js"
+	},
+	"keywords": [
+		"test libary", "test framework", "unit test"
+	],
+	"author": "David Padgett <david@summitstreet.biz> (http://summitstreet.biz/)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/david-padgett/fn-test.js/issues"
+	}
 }
