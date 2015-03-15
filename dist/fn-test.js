@@ -26,9 +26,9 @@
 
 var __FnTest = {
 
-	resultsId: "fn-test_results",
-	errorsId: "fn-test_errors",
-	summaryId: "fn-test_summary",
+	resultsId: "fn-test-results",
+	errorsId: "fn-test-errors",
+	summaryId: "fn-test-summary",
 	successes: 0,
 	failures: 0,
 
