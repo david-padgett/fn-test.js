@@ -54,7 +54,7 @@ var __FnTest = {
 		this.output(this.resultsId, "Assert" + "\t" + (status ? "Passed (+)" : "Failed (-)") + "\t" + description);
 	},
 
-	error:function(e) {
+	error: function(e) {
 		this.output(this.errorsId, "Error" + "\t" + e.message + "\n" + e.stack);
 	},
 
