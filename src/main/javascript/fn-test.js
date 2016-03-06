@@ -98,7 +98,7 @@ var __FnTest = {
 	},
 
 	summary: function() {
-		summary = (this.expectedSuccesses == -1 || this.expectedFailures == -1) ? this.failures == 0 && this.errors == 0 : this.successes == this.expectedSuccesses && this.failures == this.expectedFailures && (this.expectedErrors != -1 ? this.errors == this.expectedErrors : true);
+		summary = (this.expectedSuccesses == -1 || this.expectedFailures == -1) ? this.failures == 0 && this.errors == 0 : this.successes == this.expectedSuccesses && this.failures == this.expectedFailures && (this.expectedErrors == -1 ? true: this.errors == this.expectedErrors);
 		str = "\t\tPassed\tFailed\tErrors\n";
 		str += "Expected\t" + this.expectedSuccesses + "\t" + this.expectedFailures + "\t" + this.expectedErrors + "\n";
 		str += "Actual\t\t" + this.successes + "\t" + this.failures + "\t" + this.errors + "\n";

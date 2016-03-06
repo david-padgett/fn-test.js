@@ -23,7 +23,7 @@
 
 # fn-test.js/fn-test.mak
 
-include $(ETC_BIN)/javascript_vars.mak
+include $(MAKEFILE_DIR)/javascript_vars.mak
 
 BUILD_TARGETS=\
 	fn-test.js \
@@ -36,5 +36,5 @@ fn-test.js : $(SOURCE_DIR)/main/javascript/fn-test.js
 fn-test-node.js : $(SOURCE_DIR)/main/javascript/fn-test-node-prefix.js $(SOURCE_DIR)/main/javascript/fn-test.js $(SOURCE_DIR)/main/javascript/fn-test-node-suffix.js
 fn-test-node-tests.js : $(SOURCE_DIR)/test/javascript/node-prefix.js $(SOURCE_DIR)/test/javascript/test.js $(SOURCE_DIR)/test/javascript/node-suffix.js
 
-include $(ETC_BIN)/javascript_rules.mak
+include $(MAKEFILE_DIR)/javascript_rules.mak
 

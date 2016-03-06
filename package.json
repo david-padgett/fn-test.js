@@ -4,11 +4,14 @@
 	"description": "fn-test.js - A simple pass/fail functional test library for JavaScript.",
 	"main": "build/fn-test-node.js",
 	"scripts": {
-		"test": "make -f fn-test.mak test"
+		"test": "make -f fn-test.mak ETC_BIN=node_modules/etc/build test"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/david-padgett/fn-test.js"
+	},
+	"devDependencies": {
+		"etc": "git://github.com/david-padgett/etc.git"
 	},
 	"keywords": [
 		"test libary", "test framework", "unit test"
