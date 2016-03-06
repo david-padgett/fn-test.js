@@ -1,31 +1,40 @@
-SED_SLC_REGEX="/\/\//d"
-SED_MLC_REGEX="/\/\*\*/,/\*\//d"
+#
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 David Padgett/Summit Street, Inc.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
-SED_ARGS=$(if grep -c 'Darwin',-i "",-i)
+# fn-test.js/fn-test.mak
 
-dist/fn-test.js : src/main/javascript/fn-test.js
-	@echo Building $@
-	@mkdir -p dist
-	@cat $+ > $@
-	@sed $(SED_ARGS) $(SED_SLC_REGEX) $@
-	@sed $(SED_ARGS) $(SED_MLC_REGEX) $@
+include $(ETC_BIN)/javascript_vars.mak
 
-dist/fn-test-node.js : src/main/javascript/fn-test-node-prefix.js src/main/javascript/fn-test.js src/main/javascript/fn-test-node-suffix.js
-	@echo Building $@
-	@mkdir -p dist
-	@cat $+ > $@
-	@sed $(SED_ARGS) $(SED_SLC_REGEX) $@
-	@sed $(SED_ARGS) $(SED_MLC_REGEX) $@
+BUILD_TARGETS=\
+	fn-test.js \
+	fn-test-node.js
 
-dist/fn-test-node-tests.js : src/test/javascript/node-prefix.js src/test/javascript/test.js src/test/javascript/node-suffix.js
-	@echo Building $@
-	@mkdir -p dist
-	@cat $+ > $@
-	@sed $(SED_ARGS) $(SED_SLC_REGEX) $@
-	@sed $(SED_ARGS) $(SED_MLC_REGEX) $@
+TEST_TARGETS=\
+	fn-test-node-tests.js
 
-all: dist/fn-test.js dist/fn-test-node.js dist/fn-test-node-tests.js
+fn-test.js : $(SOURCE_DIR)/main/javascript/fn-test.js
+fn-test-node.js : $(SOURCE_DIR)/main/javascript/fn-test-node-prefix.js src/main/javascript/fn-test.js src/main/javascript/fn-test-node-suffix.js
+fn-test-node-tests.js : $(SOURCE_DIR)/test/javascript/node-prefix.js src/test/javascript/test.js src/test/javascript/node-suffix.js
 
-test: all
-	@echo Running unit tests
-	@node dist/fn-test-node-tests.js
+include $(ETC_BIN)/javascript_rules.mak
+

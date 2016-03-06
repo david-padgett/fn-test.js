@@ -31,6 +31,10 @@ var __FnTest = {
 	summaryId: "fn-test-summary",
 	successes: 0,
 	failures: 0,
+	errors: 0,
+	expectedSuccesses: -1,
+	expectedFailures: -1,
+	expectedErrors: -1,
 
 	assert: function(description, condition) {
 		var status = false;
@@ -38,6 +42,7 @@ var __FnTest = {
 			status = condition.apply(null, []);
 		}
 		catch (e) {
+			description += " (" + e.message + ")\n\n" + e.stack + "\n"
 		}
 
 		if (status) {
@@ -49,12 +54,19 @@ var __FnTest = {
 		this.output(this.resultsId, "Assert" + "\t" + (status ? "Passed (+)" : "Failed (-)") + "\t" + description);
 	},
 
-	error:function(e) {
-		this.output(this.errorsId, "Error" + "\t" + e.message + "\n" + e.stack);
+	error: function(e) {
+		++this.errors;
+		this.output(this.errorsId, "Error" + "\t" + e.message + "\n\n" + e.stack + "\n");
 	},
 
 	message: function(primary, secondary) {
 		this.output(this.resultsId, "Message" + "\t" + primary + "\t" + (secondary != null ? secondary : ""));
+	},
+
+	expect: function(expectedSuccesses, expectedFailures, expectedErrors) {
+		this.expectedSuccesses = expectedSuccesses;
+		this.expectedFailures = expectedFailures;
+		this.expectedErrors = expectedErrors
 	},
 
 	output: function(id, str) {
@@ -71,7 +83,18 @@ var __FnTest = {
 	},
 
 	summary: function() {
-		this.output(this.summaryId, "Summary" + "\t" + "Passed: " + this.successes + "\tFailed: " + this.failures);
+		this.output(this.summaryId, "\t\tPassed\tFailed\tErrors");
+		if (this.expectedSuccesses == -1 || this.expectedFailures == -1) {
+			summary = this.failures == 0 && this.errors == 0;
+		}
+		else {
+			this.output(this.summaryId, "Expected\t" + this.expectedSuccesses + "\t" + this.expectedFailures + "\t" + this.expectedErrors);
+			summary = this.successes == this.expectedSuccesses && this.failures == this.expectedFailures && (this.expectedErrors != -1 ? this.errors == this.expectedErrors : true);
+		}
+		this.output(this.summaryId, "Actual\t\t" + this.successes + "\t" + this.failures + "\t" + this.errors);
+		this.output(this.summaryId, "\nResult\t" + "\t" + (summary ? "PASSED": "FAILED") + "\n");
 	}
 
 }
+
+module.exports = __FnTest;
