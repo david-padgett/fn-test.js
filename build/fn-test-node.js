@@ -61,8 +61,9 @@ var __FnTest = {
 	},
 
 	error: function(e) {
+		prefix = this.errors > 0 ? "\n" : ""
 		++this.errors;
-		this.output(this.errorsId, "Error" + "\t" + e.message + "\n\n" + e.stack + "\n");
+		this.output(this.errorsId, prefix + "Error" + "\t" + e.message + "\n\n" + e.stack + "\n");
 	},
 
 	message: function(primary, secondary) {
