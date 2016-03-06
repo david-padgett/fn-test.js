@@ -35,14 +35,18 @@ var __FnTest = {
 	expectedSuccesses: -1,
 	expectedFailures: -1,
 	expectedErrors: -1,
+	lastAssertionWasError: false,
 
 	assert: function(description, condition) {
 		var status = false;
+		var error = false;
 		try {
 			status = condition.apply(null, []);
 		}
 		catch (e) {
-			description += " (" + e.message + ")\n\n" + e.stack + "\n"
+			error = true
+			stack = e.stack[e.stack.length - 1] != '\n' ? e.stack : e.stack.slice(0, -1)
+			description += " (" + e.message + ")\n\n" + stack + "\n"
 		}
 
 		if (status) {
@@ -51,7 +55,9 @@ var __FnTest = {
 		else {
 			++this.failures;
 		}
-		this.output(this.resultsId, "Assert" + "\t" + (status ? "Passed (+)" : "Failed (-)") + "\t" + description);
+		prefix = this.lastAssertionWasError ? "\n" : "";
+		this.output(this.resultsId, prefix + "Assert" + "\t" + (status ? "Passed (+)" : "Failed (-)") + "\t" + description);
+		this.lastAssertionWasError = error
 	},
 
 	error: function(e) {
@@ -78,21 +84,20 @@ var __FnTest = {
 			resultsNode.appendChild(preNode);
 		}
 		catch (e) {
+			if (id == this.summaryId) {
+				console.log()
+			}
 			console.log(str);
 		}
 	},
 
 	summary: function() {
-		this.output(this.summaryId, "\t\tPassed\tFailed\tErrors");
-		if (this.expectedSuccesses == -1 || this.expectedFailures == -1) {
-			summary = this.failures == 0 && this.errors == 0;
-		}
-		else {
-			this.output(this.summaryId, "Expected\t" + this.expectedSuccesses + "\t" + this.expectedFailures + "\t" + this.expectedErrors);
-			summary = this.successes == this.expectedSuccesses && this.failures == this.expectedFailures && (this.expectedErrors != -1 ? this.errors == this.expectedErrors : true);
-		}
-		this.output(this.summaryId, "Actual\t\t" + this.successes + "\t" + this.failures + "\t" + this.errors);
-		this.output(this.summaryId, "\nResult\t" + "\t" + (summary ? "PASSED": "FAILED") + "\n");
+		summary = (this.expectedSuccesses == -1 || this.expectedFailures == -1) ? this.failures == 0 && this.errors == 0 : this.successes == this.expectedSuccesses && this.failures == this.expectedFailures && (this.expectedErrors != -1 ? this.errors == this.expectedErrors : true);
+		str = "\t\tPassed\tFailed\tErrors\n";
+		str += "Expected\t" + this.expectedSuccesses + "\t" + this.expectedFailures + "\t" + this.expectedErrors + "\n";
+		str += "Actual\t\t" + this.successes + "\t" + this.failures + "\t" + this.errors + "\n";
+		str += "Result\t" + "\t" + (summary ? "PASSED": "FAILED") + "\n";
+		this.output(this.summaryId, str);
 	}
 
 }
