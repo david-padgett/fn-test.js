@@ -33,8 +33,8 @@ TEST_TARGETS=\
 	fn-test-node-tests.js
 
 fn-test.js : $(SOURCE_DIR)/main/javascript/fn-test.js
-fn-test-node.js : $(SOURCE_DIR)/main/javascript/fn-test-node-prefix.js src/main/javascript/fn-test.js src/main/javascript/fn-test-node-suffix.js
-fn-test-node-tests.js : $(SOURCE_DIR)/test/javascript/node-prefix.js src/test/javascript/test.js src/test/javascript/node-suffix.js
+fn-test-node.js : $(SOURCE_DIR)/main/javascript/fn-test-node-prefix.js $(SOURCE_DIR)/main/javascript/fn-test.js $(SOURCE_DIR)/main/javascript/fn-test-node-suffix.js
+fn-test-node-tests.js : $(SOURCE_DIR)/test/javascript/node-prefix.js $(SOURCE_DIR)/test/javascript/test.js $(SOURCE_DIR)/test/javascript/node-suffix.js
 
 include $(ETC_BIN)/javascript_rules.mak
 
