@@ -8,7 +8,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/david-padgett/fn-test.js"
+		"url": "git://github.com/david-padgett/fn-test.js.git"
 	},
 	"dependencies": {
 		"etc": "git://github.com/david-padgett/etc.mak.git"
