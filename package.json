@@ -2,7 +2,7 @@
 	"name": "fn-test",
 	"version": "1.0.0",
 	"description": "fn-test.js - A simple pass/fail functional test library for JavaScript.",
-	"main": "dist/fn-test-node.js",
+	"main": "build/fn-test-node.js",
 	"scripts": {
 		"test": "make -f fn-test.mak test"
 	},
