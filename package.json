@@ -10,8 +10,8 @@
 		"type": "git",
 		"url": "git://github.com/david-padgett/fn-test.js.git"
 	},
-	"devDependencies": {
-		"etc": "git://github.com/david-padgett/etc.mak.git"
+	"dependencies": {
+		"etc.mak": "git://github.com/david-padgett/etc.mak.git"
 	},
 	"keywords": [
 		"test libary", "test framework", "unit test"
