@@ -1,1 +1,1 @@
-// fn-test.js/src/main/javascript/node-suffix.js
+// fn-test.js/src/test/javascript/node-suffix.js

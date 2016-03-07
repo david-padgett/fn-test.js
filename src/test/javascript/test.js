@@ -1,4 +1,4 @@
-// fn-test.js/src/main/javascript/test.js
+// fn-test.js/src/test/javascript/test.js
 
 console.log("")
 var $test = __FnTest;

@@ -1,3 +1,3 @@
-// fn-test.js/src/main/javascript/node-prefix.js
+// fn-test.js/src/test/javascript/node-prefix.js
 
 var __FnTest = require("./fn-test-node.js");
