@@ -10,7 +10,7 @@
 		"type": "git",
 		"url": "git://github.com/david-padgett/fn-test.js.git"
 	},
-	"devDependencies": {
+	"dependencies": {
 		"etc.mak": "git://github.com/david-padgett/etc.mak.git"
 	},
 	"keywords": [
