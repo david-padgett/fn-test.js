@@ -17,4 +17,4 @@ $test.assert("test of assert API - positive test 2", function() {return true;});
 
 $test.summary();
 
-process.exit($test.getResult() ? 0 : -1);
+process.exit($test.getResult() ? 0 : 1);

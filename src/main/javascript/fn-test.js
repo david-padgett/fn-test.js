@@ -33,77 +33,76 @@ var __FnTest = {
 
 	resultsId: "fn-test-results",
 	summaryId: "fn-test-summary",
-	validAssertions: 0,
-	invalidAssertions: 0,
-	validErrors: 0,
-	invalidErrors: 0,
-	expectedValidAssertions: -1,
-	expectedValidErrors: -1,
+	failedAssertTests: 0,
+	failedErrorTests: 0,
+	totalAssertTests: 0,
+	totalErrorTests: 0,
+	validAssertTests: -1,
+	validErrorTests: -1,
 	lastAssertionWasError: false,
 
 	assert: function(description, test) {
 		var status = false;
-		var error = false;
+		var stack = null;
+		++this.totalAssertTests;
 		try {
 			status = test.apply(null, []);
-			if (status) {
-				++this.validAssertions;
-			}
-			else {
-				++this.invalidAssertions;
-			}
 		}
 		catch (e) {
-			++this.invalidAssertions;
-			error = true;
-			var stack = e.stack == null ? "" : "\n\n" + (e.stack[e.stack.length - 1] != '\n' ? e.stack : e.stack.slice(0, -1));
+			stack = e.stack == null ? "" : "\n\n" + (e.stack[e.stack.length - 1] != '\n' ? e.stack : e.stack.slice(0, -1));
 			description += " (" + e.message + ")" + stack;
 		}
-		var prefix = this.lastAssertionWasError ? "\n" : "";
-		this.output(this.resultsId, prefix + "Assert" + "\t" + (status ? "Passed (+)" : "Failed (-)") + "\t" + description);
-		this.lastAssertionWasError = error;
+		if (!status) {
+			++this.failedAssertTests;
+		}
+		var prefix = (this.lastAssertionWasError ? "\n" : "") + "Assert";
+		status = status ? "Passed (+)" : "Failed (-)";
+		this.output(this.resultsId, prefix, status, description);
+		this.lastAssertionWasError = stack != null;
 	},
 
 	error: function(description, test, expectedError) {
-		var status = false;
-		var error = false;
+		var status = true;
+		var stack = null;
+		++this.totalErrorTests;
 		try {
 			test.apply(null, []);
-			++this.invalidErrors;
+			status = false;
 		}
 		catch (e) {
 			if (expectedError != null && (expectedError.constructor != e.constructor || (expectedError.message != null && expectedError.message != e.message))) {
-				++this.invalidErrors;
-				error = e.stack != null;
-				var stack = !error ? "" : "\n\n" + (e.stack[e.stack.length - 1] != '\n' ? e.stack : e.stack.slice(0, -1));
+				status = false;
+				stack = e.stack == null ? "" : "\n\n" + (e.stack[e.stack.length - 1] != '\n' ? e.stack : e.stack.slice(0, -1));
 				description += " (" + e.message + ")" + stack;
-
-			}
-			else {
-				status = true;
-				++this.validErrors;
 			}
 		}
-		var prefix = this.lastAssertionWasError ? "\n" : "";
-		this.output(this.resultsId, prefix + "Error" + "\t" + (status ? "Passed (+)" : "Failed (-)") + "\t" + description);
-		this.lastAssertionWasError = error;
+		if (!status) {
+			++this.failedErrorTests;
+		}
+		var prefix = (this.lastAssertionWasError ? "\n" : "") + "Error";
+		status = status ? "Passed (+)" : "Failed (-)";
+		this.output(this.resultsId, prefix, status, description);
+		this.lastAssertionWasError = stack != null;
 	},
 
-	expect: function(expectedValidAssertions, expectedValidErrors) {
-		this.expectedValidAssertions = expectedValidAssertions;
-		this.expectedValidErrors = expectedValidErrors
+	expect: function(validAssertTests, validErrorTests) {
+		this.validAssertTests = validAssertTests;
+		this.validErrorTests = validErrorTests;
 	},
 
 	getResult: function() {
-		var result = this.expectedValidAssertions == -1 || this.expectedValidAssertions == -1 ? this.invalidAssertions == 0 && this.invalidErrors == 0 : this.validAssertions == this.expectedValidAssertions && this.validErrors == this.expectedValidErrors;
-		return (result);
+		if (this.validAssertTests != -1 && this.validErrorTests != -1) {
+			return (this.validAssertTests == this.totalAssertTests - this.failedAssertTests && this.validErrorTests == this.totalErrorTests - this.failedErrorTests);
+		}
+		return (this.failedAssertTests == 0 && this.failedErrorTests == 0);
 	},
 
 	message: function(primary, secondary) {
-		this.output(this.resultsId, "Message" + "\t" + primary + "\t" + (secondary != null ? secondary : ""));
+		this.output(this.resultsId, "Message", primary, (secondary != null ? secondary : ""));
 	},
 
-	output: function(id, str) {
+	output: function(id, prefix, status, description) {
+		var str = prefix + "\t" + status + "\t" + description;
 		try {
 			var textNode = document.createTextNode(str);
 			var preNode = document.createElement("pre");
@@ -120,16 +119,18 @@ var __FnTest = {
 	},
 
 	summary: function() {
+		var format = function(value) {
+			var prefix = "      ";
+			var str = prefix + value;
+			return (str.substr(str.length - prefix.length));
+		}
 		var result = this.getResult();
-
-		str = "\tExpect\tPassed\tFailed\n";
-		str += "Assert\t" + this.expectedValidAssertions + "\t" + this.validAssertions + "\t" + this.invalidAssertions + "\n";
-		str += "Error\t" + this.expectedValidErrors + "\t" + this.validErrors + "\t" + this.invalidErrors + "\n";
-//		str = "\t\tAssertions\tErrors\n";
-// 		str += "Expected\t\t" + this.expectedValidAssertions + "\t" + this.expectedValidErrors + "\n";
-// 		str += "Successes\t\t" + this.validAssertions + "\t" + this.validErrors + "\n";
-// 		str += "Failures\t\t" + this.invalidAssertions + "\t" + this.invalidErrors + "\n";
-		this.output(this.summaryId, str);
+		var passedAssertTests = this.totalAssertTests - this.failedAssertTests;
+		var passedErrorTests = this.totalErrorTests - this.failedErrorTests;
+		str = "\t Total\t Valid\tPassed\tFailed\n";
+		str += "Assert\t" + format(this.totalAssertTests) + "\t" + format(this.validAssertTests) + "\t" + format(passedAssertTests) + "\t" + format(this.failedAssertTests) + "\n";
+		str += "Error\t" + format(this.totalErrorTests) + "\t" + format(this.validErrorTests) + "\t" + format(passedErrorTests) + "\t" + format(this.failedErrorTests) + "\n";
+		this.output(this.summaryId, str, "", "");
 		return (result);
 	}
 
