@@ -115,6 +115,7 @@ var __FnTest = {
 
 	summary: function() {
 		var format = function(value) {
+			value = value < 0 ? "N/A" : value;
 			var prefix = "      ";
 			var str = prefix + value;
 			return (str.substr(str.length - prefix.length));
