@@ -67,9 +67,9 @@ var __FnTest = {
 		catch (e) {
 			if (expectedError != null && (expectedError.constructor != e.constructor || (expectedError.message != null && expectedError.message != e.message))) {
 				status = false;
-				stack = e.stack == null ? "" : "\n\n" + (e.stack[e.stack.length - 1] != '\n' ? e.stack : e.stack.slice(0, -1));
-				description += " (" + e.message + ")" + stack;
 			}
+			stack = e.stack == null || status == true ? "" : "\n\n" + (e.stack[e.stack.length - 1] != '\n' ? e.stack : e.stack.slice(0, -1));
+			description += " (" + e.message + ")" + stack;
 		}
 		if (!status) {
 			++this.failedErrorTests;
@@ -77,7 +77,7 @@ var __FnTest = {
 		var prefix = (this.lastAssertionWasError ? "\n" : "") + "Error";
 		status = status ? "Passed (+)" : "Failed (-)";
 		this.output(this.resultsId, prefix, status, description);
-		this.lastAssertionWasError = stack != null;
+		this.lastAssertionWasError = stack != null && stack != "";
 	},
 
 	expect: function(validAssertTests, validErrorTests) {
