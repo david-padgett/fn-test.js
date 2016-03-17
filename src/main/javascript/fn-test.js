@@ -39,7 +39,7 @@ var __FnTest = {
 	totalErrorTests: 0,
 	validAssertTests: -1,
 	validErrorTests: -1,
-	lastAssertionWasError: false,
+	lastTestHadError: false,
 
 	assert: function(description, test) {
 		var status = false;
@@ -55,10 +55,10 @@ var __FnTest = {
 		if (!status) {
 			++this.failedAssertTests;
 		}
-		var prefix = (this.lastAssertionWasError ? "\n" : "") + "Assert";
+		var prefix = (this.lastTestHadError ? "\n" : "") + "Assert";
 		status = status ? "Passed (+)" : "Failed (-)";
 		this.output(this.resultsId, prefix, status, description);
-		this.lastAssertionWasError = stack != null;
+		this.lastTestHadError = stack != null;
 	},
 
 	error: function(description, test, expectedError) {
@@ -79,15 +79,16 @@ var __FnTest = {
 		if (!status) {
 			++this.failedErrorTests;
 		}
-		var prefix = (this.lastAssertionWasError ? "\n" : "") + "Error";
+		var prefix = (this.lastTestHadError ? "\n" : "") + "Error";
 		status = status ? "Passed (+)" : "Failed (-)";
 		this.output(this.resultsId, prefix, status, description);
-		this.lastAssertionWasError = stack != null && stack != "";
+		this.lastTestHadError = stack != null && stack != "";
 	},
 
 	expect: function(validAssertTests, validErrorTests) {
 		this.validAssertTests = validAssertTests;
 		this.validErrorTests = validErrorTests;
+		this.output(this.resultsIds, "Expect", "Valid Tests", "assert: " + validAssertTests + ", error: " + validErrorTests);
 	},
 
 	getResult: function() {

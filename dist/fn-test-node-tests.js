@@ -3,8 +3,8 @@ var __FnTest = require("./fn-test-node.js");
 
 console.log("")
 var $test = __FnTest;
-$test.expect(2, 2);
 $test.message("fn-test.html", "test of message API");
+$test.expect(2, 2);
 $test.assert("test of assert API - positive test 1", function() {return true;});
 $test.assert("test of assert API - negative test 1", function() {return false;});
 $test.error("test of error API - positive test 1", function() {throw new Error("uncaught exception assertion error");});
