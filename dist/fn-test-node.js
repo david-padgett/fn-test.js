@@ -24,7 +24,7 @@
 
 
 
-function __FnTest() {
+function FnTest() {
 
 	this.resultsId = "fn-test-results";
 	this.summaryId = "fn-test-summary";
@@ -133,4 +133,4 @@ function __FnTest() {
 
 }
 
-module.exports = new __FnTest();
+module.exports = new FnTest();

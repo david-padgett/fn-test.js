@@ -24,7 +24,7 @@
 
 
 
-function __FnTest() {
+function FnTest() {
 
 	this.resultsId = "fn-test-results";
 	this.summaryId = "fn-test-summary";

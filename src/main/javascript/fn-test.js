@@ -25,11 +25,11 @@
 // fn-test.js/src/main/javascript/fn-test.js
 
 /**
- * The object literal type __FnTest provides a simple function-based, assertion
+ * The object literal type FnTest provides a simple function-based, assertion
  * pass/fail test library/framework.
  */
 
-function __FnTest() {
+function FnTest() {
 
 	this.resultsId = "fn-test-results";
 	this.summaryId = "fn-test-summary";
