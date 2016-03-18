@@ -1,8 +1,7 @@
 
-var __FnTest = require("./fn-test-node.js");
+var $test = require("./fn-test-node.js");
 
 console.log("")
-var $test = __FnTest;
 $test.message("fn-test.html", "test of message API");
 $test.expect(2, 2);
 $test.assert("test of assert API - positive test 1", function() {return true;});
