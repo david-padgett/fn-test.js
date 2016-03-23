@@ -1,19 +1,21 @@
 
-var $test = require("./fn-test-node.js");
+var $test = new (require("./fn-test-node.js"))();
 
 console.log("")
-$test.message("fn-test.html", "test of message API");
-$test.expect(2, 2);
-$test.assert("test of assert API - positive test 1", function() {return true;});
-$test.assert("test of assert API - negative test 1", function() {return false;});
-$test.error("test of error API - positive test 1", function() {throw new Error("uncaught exception assertion error");});
-$test.error("test of error API - positive test 2", function() {throw new Error("uncaught exception assertion error with expected error");}, new Error("uncaught exception assertion error with expected error"));
-$test.error("test of error API - negative test 1", function() {throw {message: "non-Error object"};}, new Error("uncaught exception assertion error"));
-$test.error("test of error API - negative test 2", function() {throw new TypeError("incorrect error type");}, new Error("uncaught exception assertion error"));
-$test.error("test of error API - negative test 3", function() {return true;});
-$test.error("test of error API - negative test 4", function() {throw new Error("incorrect message");}, new Error("uncaught exception assertion error"));
-$test.assert("test of assert API - positive test 2", function() {return true;});
+$test.message("fn-test", "test of message API");
+$test.assertPositive("[test #1] assertPositive API (positive)", function() {return true;});
+$test.assertPositive("[test #2] assertPositive API (negative)", function() {return false;});
+$test.assertNegative("[test #3] assertNegative API (positive)", function() {return false;});
+$test.assertNegative("[test #4] assertNegative API (negative)", function() {return true;});
+$test.assertError("[test #5] assertError API (positive)", function() {throw new Error("uncaught exception assertion assertError");});
+$test.assertError("[test #6] assertError API (positive)", function() {throw new Error("uncaught exception assertion assertError with matching expected assertError");}, new Error("uncaught exception assertion assertError with matching expected assertError"));
+$test.assertError("[test #7] assertError API (positive)", function() {throw {message: "non-Error object"};});
+$test.assertError("[test #8] assertError API (negative)", function() {throw {message: "non-Error object with non-matching expected assertError"};}, new Error("uncaught exception assertion assertError"));
+$test.assertError("[test #9] assertError API (negative)", function() {throw new TypeError("incorrect assertError type");}, new Error("uncaught exception assertion assertError"));
+$test.assertError("[test #10] assertError API (negative)", function() {return true;});
+$test.assertError("[test #11] assertError API (negative)", function() {throw new Error("incorrect message");}, new Error("uncaught exception assertion assertError"));
+$test.assertPositive("[test #12] assertPositive API (positive)", function() {return true;});
 
 $test.summary();
 
-process.exit($test.getResult() ? 0 : 1);
+process.exit($test.getResult(1, 1, 4) ? 0 : 1);

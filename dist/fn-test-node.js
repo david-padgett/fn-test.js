@@ -28,77 +28,63 @@ function FnTest() {
 
 	this.resultsId = "fn-test-results";
 	this.summaryId = "fn-test-summary";
-	this.failedAssertTests = 0;
-	this.failedErrorTests = 0;
-	this.totalAssertTests = 0;
+	this.totalPositiveTests = 0;
+	this.failedPositiveTests = 0;
+	this.totalNegativeTests = 0;
+	this.failedNegativeTests = 0;
 	this.totalErrorTests = 0;
-	this.validAssertTests = -1;
-	this.validErrorTests = -1;
-	this.lastTestHadError = false;
+	this.failedErrorTests = 0;
+	this.lastTestCausedError = false;
+	this.firstTest = true;
 
-	this.assert = function(description, test) {
-		var status = false;
-		var stack = null;
-		++this.totalAssertTests;
-		try {
-			status = test.apply(null, []);
-		}
-		catch (e) {
-			stack = e.stack == null ? "" : "\n\n" + (e.stack[e.stack.length - 1] != '\n' ? e.stack : e.stack.slice(0, -1));
-			description += " (" + e.message + ")" + stack;
-		}
-		if (!status) {
-			++this.failedAssertTests;
-		}
-		var prefix = (this.lastTestHadError ? "\n" : "") + "Assert";
-		status = status ? "Passed (+)" : "Failed (-)";
-		this.output(this.resultsId, prefix, status, description);
-		this.lastTestHadError = stack != null;
-	};
+	function format(value, width) {
+		var rightJustified = value.constructor === Number;
+		value = value.toString();
+		var padding = new Array(Math.abs(value.length - width) + 1).join(' ');
+		var str = rightJustified ? padding + value : value + padding;
+		return (str);
+	}
 
-	this.error = function(description, test, expectedError) {
-		var status = true;
-		var stack = null;
+	this.assertError = function(description, testFunction, expectedError) {
 		++this.totalErrorTests;
-		try {
-			test.apply(null, []);
-			status = false;
-		}
-		catch (e) {
-			if (expectedError != null && (expectedError.constructor != e.constructor || (expectedError.message != null && expectedError.message != e.message))) {
-				status = false;
-			}
-			stack = e.stack == null || status == true ? "" : "\n\n" + (e.stack[e.stack.length - 1] != '\n' ? e.stack : e.stack.slice(0, -1));
-			description += " (" + e.message + ")" + stack;
-		}
-		if (!status) {
+		var result = this.test("Error", null, description, testFunction, expectedError);
+		if (result.error == null || result.status != null) {
 			++this.failedErrorTests;
 		}
-		var prefix = (this.lastTestHadError ? "\n" : "") + "Error";
-		status = status ? "Passed (+)" : "Failed (-)";
-		this.output(this.resultsId, prefix, status, description);
-		this.lastTestHadError = stack != null && stack != "";
+		return (result);
 	};
 
-	this.expect = function(validAssertTests, validErrorTests) {
-		this.validAssertTests = validAssertTests;
-		this.validErrorTests = validErrorTests;
-		this.output(this.resultsId, "Expect", "Valid Tests", "assert: " + validAssertTests + ", error: " + validErrorTests);
-	};
-
-	this.getResult = function() {
-		if (this.validAssertTests != -1 && this.validErrorTests != -1) {
-			return (this.validAssertTests == this.totalAssertTests - this.failedAssertTests && this.validErrorTests == this.totalErrorTests - this.failedErrorTests);
+	this.assertNegative = function(description, testFunction) {
+		++this.totalNegativeTests;
+		var result = this.test("Negative", false, description, testFunction, null);
+		if (result.status) {
+			++this.failedNegativeTests;
 		}
-		return (this.failedAssertTests == 0 && this.failedErrorTests == 0);
+		return (result);
+	};
+
+	this.assertPositive = function(description, testFunction) {
+		++this.totalPositiveTests;
+		var result = this.test("Positive", true, description, testFunction, null);
+		if (!result.status) {
+			++this.failedPositiveTests;
+		}
+		return (result);
+	};
+
+	this.getResult = function(failedPositiveTests, failedNegativeTests, failedErrorTests) {
+		if (arguments.length > 0) {
+			return (this.failedPositiveTests == failedPositiveTests && this.failedNegativeTests == failedNegativeTests && this.failedErrorTests == failedErrorTests);
+		}
+		return (this.failedPositiveTests == 0 && this.failedNegativeTests == 0 && this.failedErrorTests == 0);
 	};
 
 	this.message = function(primary, secondary) {
-		this.output(this.resultsId, "Message", primary, (secondary != null ? secondary : ""));
+		this.output(this.resultsId, "Message", "", primary + (secondary != null ?  " (" + secondary + ")": ""));
 	};
 
 	this.output = function(id, prefix, status, description) {
-		var str = prefix + "\t" + status + "\t" + description;
+		var str = (this.lastTestCausedError ? "\n" : "") + format(prefix, 10) + format(status, 10) + description;
 		try {
 			var textNode = document.createTextNode(str);
 			var preNode = document.createElement("pre");
@@ -115,22 +101,35 @@ function FnTest() {
 	};
 
 	this.summary = function() {
-		var format = function(value) {
-			value = value < 0 ? "N/A" : value;
-			var prefix = "      ";
-			var str = prefix + value;
-			return (str.substr(str.length - prefix.length));
-		}
 		var result = this.getResult();
-		var passedAssertTests = this.totalAssertTests - this.failedAssertTests;
-		var passedErrorTests = this.totalErrorTests - this.failedErrorTests;
-		str = "\t Total\t Valid\tPassed\tFailed\n";
-		str += "Assert\t" + format(this.totalAssertTests) + "\t" + format(this.validAssertTests) + "\t" + format(passedAssertTests) + "\t" + format(this.failedAssertTests) + "\n";
-		str += "Error\t" + format(this.totalErrorTests) + "\t" + format(this.validErrorTests) + "\t" + format(passedErrorTests) + "\t" + format(this.failedErrorTests) + "\n";
+		str = format("", 8) + " " + format("Total", 5) + " " + format("Passed", 6) + " " + format("Failed", 6) + "\n";
+		str += format("Positive", 8) + " " + format(this.totalPositiveTests, 5) + " " + format(this.totalPositiveTests - this.failedPositiveTests, 6) + " " + format(this.failedPositiveTests, 6) + "\n";
+		str += format("Negative", 8) + " " + format(this.totalNegativeTests, 5) + " " + format(this.totalNegativeTests - this.failedNegativeTests, 6) + " " + format(this.failedNegativeTests, 6) + "\n";
+		str += format("Error", 8) + " " + format(this.totalErrorTests, 5) + " " + format(this.totalErrorTests - this.failedErrorTests, 6) + " " + format(this.failedErrorTests, 6) + "\n";
 		this.output(this.summaryId, str, "", "");
+		return (result);
+	};
+
+	this.test = function(type, expectedStatus, description, testFunction, expectedError) {
+		var result = {status: null, error: null};
+		try {
+			result.status = testFunction.apply(null, []);
+		}
+		catch (e) {
+			result.error = e;
+			var stack = e.stack == null ? "" : "\n\n" + (e.stack[e.stack.length - 1] != '\n' ? e.stack : e.stack.slice(0, -1));
+			description += " (" + e.message + ")" + stack;
+		}
+
+		if (expectedError != null && (expectedError.constructor != result.error.constructor || (expectedError.message != null && expectedError.message != result.error.message))) {
+			result.status = false;
+		}
+
+		this.output(this.resultsId, type, result.status === expectedStatus ? "Passed" : "Failed", description);
+		this.lastTestCausedError = result.error != null && result.error.stack != null;
 		return (result);
 	};
 
 }
 
-module.exports = new FnTest();
+module.exports = FnTest;

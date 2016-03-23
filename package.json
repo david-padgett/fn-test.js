@@ -1,6 +1,6 @@
 {
 	"name": "fn-test.js",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"description": "fn-test.js - A simple pass/fail functional test library for JavaScript.",
 	"main": "dist/fn-test-node.js",
 	"scripts": {
