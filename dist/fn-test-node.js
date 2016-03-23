@@ -45,7 +45,7 @@ function FnTest() {
 		return (str);
 	}
 
-	this.assertError = function(description, testFunction, expectedError) {
+	this.error = function(description, testFunction, expectedError) {
 		++this.totalErrorTests;
 		var result = this.test("Error", null, description, testFunction, expectedError);
 		if (result.error == null || result.status != null) {
@@ -54,7 +54,7 @@ function FnTest() {
 		return (result);
 	};
 
-	this.assertNegative = function(description, testFunction) {
+	this.negative = function(description, testFunction) {
 		++this.totalNegativeTests;
 		var result = this.test("Negative", false, description, testFunction, null);
 		if (result.status) {
@@ -63,7 +63,7 @@ function FnTest() {
 		return (result);
 	};
 
-	this.assertPositive = function(description, testFunction) {
+	this.positive = function(description, testFunction) {
 		++this.totalPositiveTests;
 		var result = this.test("Positive", true, description, testFunction, null);
 		if (!result.status) {
@@ -81,6 +81,7 @@ function FnTest() {
 
 	this.message = function(primary, secondary) {
 		this.output(this.resultsId, "Message", "", primary + (secondary != null ?  " (" + secondary + ")": ""));
+		this.lastTestCausedError = false;
 	};
 
 	this.output = function(id, prefix, status, description) {
