@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,8 +25,8 @@
 // fn-test.js/src/main/javascript/fn-test.js
 
 /**
- * The object literal type FnTest provides a simple function-based, assertion
- * pass/fail test library/framework.
+ * The type FnTest provides a simple function-based, assertion pass/fail test
+ * library.
  */
 
 function FnTest() {
@@ -40,6 +40,7 @@ function FnTest() {
 	this.totalErrorTests = 0;
 	this.failedErrorTests = 0;
 	this.lastTestCausedError = false;
+	this.initialized = false;
 
 	function format(value, width) {
 		var rightJustified = value.constructor === Number;
@@ -83,12 +84,21 @@ function FnTest() {
 		return (this.failedPositiveTests == 0 && this.failedNegativeTests == 0 && this.failedErrorTests == 0);
 	};
 
+	this.initialize = function() {
+		if (!this.initialized) {
+			this.initialized = true;
+			this.output(this.resultsId, "Type", "Result", "Description");
+			this.output(this.resultsId, "---------", "---------", "-----------");
+		}
+	}
+
 	this.message = function(primary, secondary) {
 		this.output(this.resultsId, "Message", "", primary + (secondary != null ?  " (" + secondary + ")": ""));
 		this.lastTestCausedError = false;
 	};
 
 	this.output = function(id, prefix, status, description) {
+		this.initialize();
 		var str = (this.lastTestCausedError ? "\n" : "") + format(prefix, 10) + format(status, 10) + description;
 		try {
 			var textNode = document.createTextNode(str);
@@ -135,8 +145,5 @@ function FnTest() {
 		this.lastTestCausedError = result.error != null && result.error.stack != null;
 		return (result);
 	};
-
-	this.output(this.resultsId, "Type", "Result", "Description");
-	this.output(this.resultsId, "---------", "---------", "-----------");
 
 }

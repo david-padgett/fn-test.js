@@ -35,6 +35,7 @@ function FnTest() {
 	this.totalErrorTests = 0;
 	this.failedErrorTests = 0;
 	this.lastTestCausedError = false;
+	this.initialized = false;
 
 	function format(value, width) {
 		var rightJustified = value.constructor === Number;
@@ -78,12 +79,21 @@ function FnTest() {
 		return (this.failedPositiveTests == 0 && this.failedNegativeTests == 0 && this.failedErrorTests == 0);
 	};
 
+	this.initialize = function() {
+		if (!this.initialized) {
+			this.initialized = true;
+			this.output(this.resultsId, "Type", "Result", "Description");
+			this.output(this.resultsId, "---------", "---------", "-----------");
+		}
+	}
+
 	this.message = function(primary, secondary) {
 		this.output(this.resultsId, "Message", "", primary + (secondary != null ?  " (" + secondary + ")": ""));
 		this.lastTestCausedError = false;
 	};
 
 	this.output = function(id, prefix, status, description) {
+		this.initialize();
 		var str = (this.lastTestCausedError ? "\n" : "") + format(prefix, 10) + format(status, 10) + description;
 		try {
 			var textNode = document.createTextNode(str);
@@ -130,8 +140,5 @@ function FnTest() {
 		this.lastTestCausedError = result.error != null && result.error.stack != null;
 		return (result);
 	};
-
-	this.output(this.resultsId, "Type", "Result", "Description");
-	this.output(this.resultsId, "---------", "---------", "-----------");
 
 }
