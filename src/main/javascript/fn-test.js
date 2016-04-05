@@ -31,6 +31,22 @@
 
 function FnTest() {
 
+	//** Constants
+
+	//** Functions
+
+	function format(value, width) {
+		var rightJustified = value.constructor === Number;
+		value = value.toString();
+		var padding = new Array(Math.abs(value.length - width) + 1).join(' ');
+		var str = rightJustified ? padding + value : value + padding;
+		return (str);
+	}
+
+	//** Inner Classes
+
+	//** Instance Variables
+
 	this.resultsId = "fn-test-results";
 	this.summaryId = "fn-test-summary";
 	this.totalPositiveTests = 0;
@@ -42,13 +58,7 @@ function FnTest() {
 	this.lastTestCausedError = false;
 	this.initialized = false;
 
-	function format(value, width) {
-		var rightJustified = value.constructor === Number;
-		value = value.toString();
-		var padding = new Array(Math.abs(value.length - width) + 1).join(' ');
-		var str = rightJustified ? padding + value : value + padding;
-		return (str);
-	}
+	//** Instance Operations
 
 	this.assertError = function(description, testFunction, expectedError) {
 		++this.totalErrorTests;
@@ -145,5 +155,7 @@ function FnTest() {
 		this.lastTestCausedError = result.error != null && result.error.stack != null;
 		return (result);
 	};
+
+	//** Constructor
 
 }

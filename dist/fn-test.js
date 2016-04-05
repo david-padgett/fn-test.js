@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -26,6 +26,18 @@
 
 function FnTest() {
 
+
+
+	function format(value, width) {
+		var rightJustified = value.constructor === Number;
+		value = value.toString();
+		var padding = new Array(Math.abs(value.length - width) + 1).join(' ');
+		var str = rightJustified ? padding + value : value + padding;
+		return (str);
+	}
+
+
+
 	this.resultsId = "fn-test-results";
 	this.summaryId = "fn-test-summary";
 	this.totalPositiveTests = 0;
@@ -37,13 +49,6 @@ function FnTest() {
 	this.lastTestCausedError = false;
 	this.initialized = false;
 
-	function format(value, width) {
-		var rightJustified = value.constructor === Number;
-		value = value.toString();
-		var padding = new Array(Math.abs(value.length - width) + 1).join(' ');
-		var str = rightJustified ? padding + value : value + padding;
-		return (str);
-	}
 
 	this.assertError = function(description, testFunction, expectedError) {
 		++this.totalErrorTests;
@@ -140,5 +145,6 @@ function FnTest() {
 		this.lastTestCausedError = result.error != null && result.error.stack != null;
 		return (result);
 	};
+
 
 }
