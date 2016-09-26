@@ -1,4 +1,6 @@
-/*
+"use strict";
+
+/**
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 David Padgett/Summit Street, Inc.
@@ -24,6 +26,8 @@
 
 // fn-test.js/src/main/javascript/fn-test.js
 
+/* eslint-disable no-console, no-unused-vars */
+
 /**
  * The type FnTest provides a simple function-based, assertion pass/fail test
  * library.
@@ -38,7 +42,7 @@ function FnTest() {
 	function format(value, width) {
 		var rightJustified = value.constructor === Number;
 		value = value.toString();
-		var padding = new Array(Math.abs(value.length - width) + 1).join(' ');
+		var padding = new Array(Math.abs(value.length - width) + 1).join(" ");
 		var str = rightJustified ? padding + value : value + padding;
 		return (str);
 	}
@@ -100,7 +104,7 @@ function FnTest() {
 			this.output(this.resultsId, "Type", "Result", "Description");
 			this.output(this.resultsId, "---------", "---------", "-----------");
 		}
-	}
+	};
 
 	this.message = function(primary, secondary) {
 		this.output(this.resultsId, "Message", "", primary + (secondary != null ?  " (" + secondary + ")": ""));
@@ -119,7 +123,7 @@ function FnTest() {
 		}
 		catch (e) {
 			if (id == this.summaryId) {
-				console.log()
+				console.log();
 			}
 			console.log(str);
 		}
@@ -127,7 +131,7 @@ function FnTest() {
 
 	this.summary = function() {
 		var result = this.getResult();
-		str = format("Type", 10) + " " + format("Total", 5) + " " + format("Passed", 6) + " " + format("Failed", 6) + "\n";
+		var str = format("Type", 10) + " " + format("Total", 5) + " " + format("Passed", 6) + " " + format("Failed", 6) + "\n";
 		str += format("----------", 10) + " " + format("-----", 5) + " " + format("------", 6) + " " + format("------", 6) + "\n";
 		str += format("True", 10) + " " + format(this.totalPositiveTests, 5) + " " + format(this.totalPositiveTests - this.failedPositiveTests, 6) + " " + format(this.failedPositiveTests, 6) + "\n";
 		str += format("False", 10) + " " + format(this.totalNegativeTests, 5) + " " + format(this.totalNegativeTests - this.failedNegativeTests, 6) + " " + format(this.failedNegativeTests, 6) + "\n";
@@ -143,7 +147,7 @@ function FnTest() {
 		}
 		catch (e) {
 			result.error = e;
-			var stack = e.stack == null ? "" : "\n\n" + (e.stack[e.stack.length - 1] != '\n' ? e.stack : e.stack.slice(0, -1));
+			var stack = e.stack == null ? "" : "\n\n" + (e.stack[e.stack.length - 1] != "\n" ? e.stack : e.stack.slice(0, -1));
 			description += " (" + e.message + ")" + stack;
 		}
 

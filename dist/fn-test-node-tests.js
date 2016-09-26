@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 
 console.log();
 var $test = new (require("./fn-test-node.js"))();
@@ -19,3 +20,4 @@ $test.assertTrue("[test #12] assertPositive API (positive)", function() {return 
 $test.summary();
 
 process.exit($test.getResult(1, 1, 4) ? 0 : 1);
+
