@@ -34,37 +34,34 @@ all :
 ### Initialize/bootstrap makestuff environment
 ### usage: make [-f <makefile>] init [REPO_DIR=<external_repo_base_directory>]
 
-init :
+makestuff_init :
 	@python -c 'import os, re, sys ; C = "git clone --branch {1} https://{0}.git {2}" ; R, V = re.match(r"(.+?)(@.*)?.git", sys.argv[2]).groups() ; D = os.sep.join([sys.argv[1], R, V[1:]]) ; None if os.path.isdir(D) else os.system(C.format(R, V[1:], D))' $(REPO_DIR) $(MAKESTUFF_REPO) >/dev/null 2>/dev/null
 	@rm -fr $(REPO_DIR)/.tmp ; mv $(MAKESTUFF)/dist $(REPO_DIR)/.tmp ; rm -fr $(MAKESTUFF) ; mv $(REPO_DIR)/.tmp $(MAKESTUFF)
 
-.PHONY : all init
+.PHONY : all makestuff_init
 
 #** makestuff/src/javascript/javascript.mak
 
 -include $(MAKESTUFF)/javascript_vars.mak
 
-BUILD_DEPENDENCIES=\
-	github.com/account/repo.git
-
 BUILD_TARGETS=\
-	fn-test.js \
-	fn-test-node.js
+	$(DIST_DIR)/fn-test.js \
+	$(DIST_DIR)/fn-test-node.js
 
 JAVASCRIPT_TEST_COMPONENTS=\
-	fn-test-node-tests.js
+	$(DIST_DIR)/fn-test-node-tests.js
 
-fn-test.js : \
-	$(SOURCE_DIR)/main/javascript/fn-test.js
+$(DIST_DIR)/fn-test.js : \
+	$(SRC_DIR)/main/javascript/fn-test.js
 
-fn-test-node.js : \
-	$(SOURCE_DIR)/main/javascript/fn-test-node-prefix.js \
-	$(SOURCE_DIR)/main/javascript/fn-test.js \
-	$(SOURCE_DIR)/main/javascript/fn-test-node-suffix.js
+$(DIST_DIR)/fn-test-node.js : \
+	$(SRC_DIR)/main/javascript/fn-test-node-prefix.js \
+	$(SRC_DIR)/main/javascript/fn-test.js \
+	$(SRC_DIR)/main/javascript/fn-test-node-suffix.js
 
-fn-test-node-tests.js : \
-	$(SOURCE_DIR)/test/javascript/node-prefix.js \
-	$(SOURCE_DIR)/test/javascript/test.js \
-	$(SOURCE_DIR)/test/javascript/node-suffix.js
+$(DIST_DIR)/fn-test-node-tests.js : \
+	$(SRC_DIR)/test/javascript/node-prefix.js \
+	$(SRC_DIR)/test/javascript/test.js \
+	$(SRC_DIR)/test/javascript/node-suffix.js
 
 -include $(MAKESTUFF)/javascript_rules.mak
