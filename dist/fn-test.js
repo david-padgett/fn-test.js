@@ -24,6 +24,7 @@
  * SOFTWARE.
  */
 
+/* global */
 /* eslint-disable no-console, no-unused-vars */
 
 /**

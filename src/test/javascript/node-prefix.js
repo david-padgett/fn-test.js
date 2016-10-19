@@ -1,3 +1,5 @@
+"use strict";
+
 // fn-test.js/src/test/javascript/node-prefix.js
 
 /* eslint-disable no-console */

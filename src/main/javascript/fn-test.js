@@ -26,6 +26,7 @@
 
 // fn-test.js/src/main/javascript/fn-test.js
 
+/* global */
 /* eslint-disable no-console, no-unused-vars */
 
 /**
